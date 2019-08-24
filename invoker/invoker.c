@@ -9,5 +9,5 @@ int main(int argc, char *argv[]) {
 	if (argc ==0 || ret==-1) {
 		printf("ERROR");
 	}
-	execlp("./simplemenu.elf","simplemenu.elf",NULL);
+	execlp("./simplemenu.elf","simplemenu.elf", argv[3], argv[4], NULL);
 }
