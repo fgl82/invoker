@@ -1,6 +1,7 @@
+#include <fcntl.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
 	char *directory=argv[1];
@@ -13,7 +14,11 @@ int main(int argc, char *argv[]) {
 	char execLocal[20]="";
 	pid_t pid;
 	pid = fork();
+    int fd;
 	if (pid == 0) {
+        fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
+        dup2(fd, 1);
+        dup2(fd, 2);
 		if (executable[0]=='#') {
 			chdir(menuDirectory);
 			execlp(fileToBeExecutedWithFullPath,"invoker",NULL);
@@ -21,6 +26,7 @@ int main(int argc, char *argv[]) {
 			snprintf(execLocal,sizeof(execLocal),"./%s",executable);
 			execlp(execLocal,"invoker",fileToBeExecutedWithFullPath,NULL);
 		}
+		close(fd);
 	} else {
 		wait(0);
 	}
