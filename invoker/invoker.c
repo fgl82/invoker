@@ -9,13 +9,13 @@ int main(int argc, char *argv[]) {
 	char *fileToBeExecutedWithFullPath=argv[3];
 	char *states=argv[4];
 	char *activePage=argv[5];
+	chdir(directory);
 	char execLocal[20]="";
 	pid_t pid;
 	pid = fork();
 	if (pid == 0) {
-		printf("child\n");
-		/* We are in the child. */
 		if (executable[0]=='#') {
+			chdir(menuDirectory);
 			execlp(fileToBeExecutedWithFullPath,"invoker",NULL);
 		} else {
 			snprintf(execLocal,sizeof(execLocal),"./%s",executable);
