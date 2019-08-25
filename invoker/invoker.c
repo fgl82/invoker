@@ -1,13 +1,29 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 int main(int argc, char *argv[]) {
-	char finalString[200]="";
-	snprintf(finalString, sizeof(finalString), "cd %s;%s", argv[1], argv[2]);
-	int ret = system(finalString);
-	if (argc ==0 || ret==-1) {
-		printf("ERROR");
+	char *directory=argv[1];
+	char *menuDirectory = "/mnt/gmenu2x/";
+	char *executable=argv[2];
+	char *fileToBeExecutedWithFullPath=argv[3];
+	char *states=argv[4];
+	char *activePage=argv[5];
+	char execLocal[20]="";
+	pid_t pid;
+	pid = fork();
+	if (pid == 0) {
+		printf("child\n");
+		/* We are in the child. */
+		if (executable[0]=='#') {
+			execlp(fileToBeExecutedWithFullPath,"invoker",NULL);
+		} else {
+			snprintf(execLocal,sizeof(execLocal),"./%s",executable);
+			execlp(execLocal,"invoker",fileToBeExecutedWithFullPath,NULL);
+		}
+	} else {
+		wait(0);
 	}
-	execlp("./simplemenu.elf","simplemenu.elf", argv[3], argv[4], NULL);
+	chdir(menuDirectory);
+	execlp("./simplemenu.elf","simplemenu.elf", states, activePage, NULL);
 }
