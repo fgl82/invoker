@@ -12,13 +12,13 @@ int main(int argc, char *argv[]) {
 	char *states=argv[4];
 	char *activePage=argv[5];
 	int ret=0;
+	getcwd(menuDirectory, sizeof(menuDirectory));
 	ret = chdir(directory);
 	char execLocal[16]="./";
 	pid_t pid;
 	pid = fork();
 	int fd;
 	if (pid == 0 ) {
-		getcwd(menuDirectory, sizeof(menuDirectory));
 		fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
 		dup2(fd, 1);
 		dup2(fd, 2);
