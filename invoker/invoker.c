@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[]) {
 	char *directory=argv[1];
-	char *menuDirectory = "/mnt/gmenu2x/";
+	char menuDirectory[100] = "";
 	char *executable=argv[2];
 	char *fileToBeExecutedWithFullPath=argv[3];
 	char *states=argv[4];
@@ -16,11 +16,12 @@ int main(int argc, char *argv[]) {
 	char execLocal[16]="./";
 	pid_t pid;
 	pid = fork();
-    int fd;
+	int fd;
 	if (pid == 0 ) {
-        fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
-        dup2(fd, 1);
-        dup2(fd, 2);
+		getcwd(menuDirectory, sizeof(menuDirectory));
+		fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
+		dup2(fd, 1);
+		dup2(fd, 2);
 		if (executable[0]=='#') {
 			ret = chdir(menuDirectory);
 			if (ret!=-1) {
@@ -47,7 +48,6 @@ int main(int argc, char *argv[]) {
 				j++;
 			}
 			if (param[0]=='\0') {
-				snprintf(execLocal,sizeof(execLocal),"./%s",executable);
 				ret=execlp(execLocal,"invoker",fileToBeExecutedWithFullPath,NULL);
 			} else {
 				ret=execlp(execLocal,"invoker",param,fileToBeExecutedWithFullPath,NULL);
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 	if  (ret!=-1) {
 		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, NULL);
 	} else {
-		printf("ERROR!!!");
+		printf("ERROR!!!\n");
 		return (-1);
 	}
 }
