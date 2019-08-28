@@ -5,12 +5,13 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-	char *directory=argv[1];
 	char menuDirectory[100] = "";
+	char *directory=argv[1];
 	char *executable=argv[2];
 	char *fileToBeExecutedWithFullPath=argv[3];
 	char *states=argv[4];
 	char *activePage=argv[5];
+	char *returnTo=argv[6];
 	int ret=0;
 	getcwd(menuDirectory, sizeof(menuDirectory));
 	ret = chdir(directory);
@@ -59,7 +60,7 @@ int main(int argc, char *argv[]) {
 	}
 	ret = chdir(menuDirectory);
 	if  (ret!=-1) {
-		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, NULL);
+		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, returnTo, NULL);
 	} else {
 		printf("ERROR!!!\n");
 		return (-1);
