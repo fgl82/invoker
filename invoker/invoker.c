@@ -1,8 +1,22 @@
+#include <asm-generic/ioctls.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/ioctl.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+void writeCenteredMessage(char *string, int rows, int cols) {
+	int vertl = rows/2;
+	int stringLength = strlen(string) / 2;
+	for (int x = 0; x <= rows; x++) {
+		printf("\n");
+		if (x == vertl) {
+			printf("\n%*s\n", cols / 2 + stringLength, string);
+		}
+	}
+}
 
 int main(int argc, char *argv[]) {
 	char menuDirectory[100] = "";
@@ -19,6 +33,10 @@ int main(int argc, char *argv[]) {
 	pid_t pid;
 	pid = fork();
 	int fd;
+    struct winsize w; //struct winsize : will get the screensize width and height.
+    ioctl(0, TIOCGWINSZ, &w); //TIOCGWINSZ, IOCtl to Get the WINdow SiZe.
+    int columns = w.ws_col+30; //w.ws_col : number of columns from IOCTL
+    int rows = w.ws_row-4; //w.ws_row : number of rows from IOCTL
 	if (pid == 0 ) {
 		fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
 		dup2(fd, 1);
@@ -56,9 +74,11 @@ int main(int argc, char *argv[]) {
 		}
 		close(fd);
 	} else {
+	    writeCenteredMessage("\033[1;31mW\033[01;33mA\033[1;32mI\033[1;36mT\n", rows, columns);
 		wait(0);
 	}
 	ret = chdir(menuDirectory);
+	writeCenteredMessage(" ", rows, columns);
 	if  (ret!=-1) {
 		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, returnTo, NULL);
 	} else {
