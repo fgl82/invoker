@@ -26,17 +26,18 @@ int main(int argc, char *argv[]) {
 	char *states=argv[4];
 	char *activePage=argv[5];
 	char *returnTo=argv[6];
+	char *pictureMode=argv[7];
 	int ret=0;
+	char execLocal[16]="./";
+	int fd;
+    struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
+    int columns = w.ws_col+30;
+    int rows = w.ws_row-4;
 	getcwd(menuDirectory, sizeof(menuDirectory));
 	ret = chdir(directory);
-	char execLocal[16]="./";
 	pid_t pid;
 	pid = fork();
-	int fd;
-    struct winsize w; //struct winsize : will get the screensize width and height.
-    ioctl(0, TIOCGWINSZ, &w); //TIOCGWINSZ, IOCtl to Get the WINdow SiZe.
-    int columns = w.ws_col+30; //w.ws_col : number of columns from IOCTL
-    int rows = w.ws_row-4; //w.ws_row : number of rows from IOCTL
 	if (pid == 0 ) {
 		fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
 		dup2(fd, 1);
@@ -80,7 +81,7 @@ int main(int argc, char *argv[]) {
 	ret = chdir(menuDirectory);
 	writeCenteredMessage(" ", rows, columns);
 	if  (ret!=-1) {
-		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, returnTo, NULL);
+		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, returnTo, pictureMode, NULL);
 	} else {
 		printf("ERROR!!!\n");
 		return (-1);
