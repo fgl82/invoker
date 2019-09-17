@@ -6,7 +6,7 @@ PLATFORM = BITTBOY
 # Compiler
 
 ifeq ($(PLATFORM), BITTBOY)
-CC = /opt/bittboy-toolchain/bin/arm-miyoo-linux-musleabi-gcc
+CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
 else ifeq ($(PROFILE), RS97)
 CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
 else
@@ -22,7 +22,7 @@ endif
 
 CFLAGS +=  -I.
 
-LIBS += 
+LIBS +=
 LDFLAGS = -Wl,--start-group $(LIBS) -Wl,--end-group -Wl,--as-needed -Wl,--gc-sections -flto
 
 ifeq ($(DEBUG), YES)
