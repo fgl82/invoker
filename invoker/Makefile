@@ -1,13 +1,14 @@
 # Software Name
 PROGRAM = invoker.elf
-PLATFORM = BITTBOY
+#PLATFORM = BITTBOY
 #PLATFORM = PC
+PLATFORM = RS97
 
 # Compiler
 
 ifeq ($(PLATFORM), BITTBOY)
 CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
-else ifeq ($(PROFILE), RS97)
+else ifeq ($(PLATFORM), RS97)
 CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
 else
 CC = gcc
