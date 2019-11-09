@@ -2,7 +2,8 @@
 PROGRAM = invoker.elf
 #PLATFORM = BITTBOY
 #PLATFORM = PC
-PLATFORM = RS97
+#PLATFORM = RS97
+PLATFORM = RG-350
 
 # Compiler
 
@@ -10,6 +11,8 @@ ifeq ($(PLATFORM), BITTBOY)
 CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
 else ifeq ($(PLATFORM), RS97)
 CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
+else ifeq ($(PLATFORM), RG-350)
+CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
 else
 CC = gcc
 endif
@@ -17,6 +20,8 @@ endif
 # You can use Ofast too but it can be more prone to bugs, careful.
 ifeq ($(PLATFORM), BITTBOY)
 CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
+else ifeq ($(PLATFORM), RG-350)
+CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
 else
 CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie
 endif

@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 	char *returnTo=argv[6];
 	char *pictureMode=argv[7];
 	int ret=0;
-	char execLocal[16]="./";
+	char execLocal[200]="./";
 	int fd;
     struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
@@ -68,9 +68,9 @@ int main(int argc, char *argv[]) {
 				j++;
 			}
 			if (param[0]=='\0') {
-				ret=execlp(execLocal,"invoker",fileToBeExecutedWithFullPath,NULL);
+				ret=execlp("opkrun","invoker",execLocal,fileToBeExecutedWithFullPath,NULL);
 			} else {
-				ret=execlp(execLocal,"invoker",param,fileToBeExecutedWithFullPath,NULL);
+				ret=execlp("opkrun","invoker",execLocal,param,fileToBeExecutedWithFullPath,NULL);
 			}
 		}
 		close(fd);
