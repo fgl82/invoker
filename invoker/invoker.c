@@ -48,30 +48,7 @@ int main(int argc, char *argv[]) {
 				ret = execlp(fileToBeExecutedWithFullPath,"invoker",NULL);
 			}
 		} else {
-			char param[10]="";
-			unsigned i;
-			for (i=0;i<strlen(executable);i++) {
-				if (executable[i]==32) {
-					execLocal[i+2]='\0';
-					break;
-				} else {
-					execLocal[i+2]=executable[i];
-				}
-			}
-			int j=0;
-			i++;
-			for (;i<strlen(executable);i++) {
-				if (executable[i]=='\0') {
-					break;
-				}
-				param[j]=executable[i];
-				j++;
-			}
-			if (param[0]=='\0') {
-				ret=execlp("opkrun","invoker",execLocal,fileToBeExecutedWithFullPath,NULL);
-			} else {
-				ret=execlp("opkrun","invoker",execLocal,param,fileToBeExecutedWithFullPath,NULL);
-			}
+			ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
 		}
 		close(fd);
 	} else {
