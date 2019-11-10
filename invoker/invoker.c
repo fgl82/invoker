@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
 	char *returnTo=argv[6];
 	char *pictureMode=argv[7];
 	int ret=0;
-	char execLocal[200]="./";
 	int fd;
     struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
@@ -58,7 +57,7 @@ int main(int argc, char *argv[]) {
 	ret = chdir(menuDirectory);
 	writeCenteredMessage(" ", rows, columns);
 	if  (ret!=-1) {
-		execlp("./simplemenu.elf","simplemenu.elf", states, activePage, returnTo, pictureMode, NULL);
+		execlp("./simplemenu.dge","simplemenu.dge", states, activePage, returnTo, pictureMode, NULL);
 	} else {
 		printf("ERROR!!!\n");
 		return (-1);
