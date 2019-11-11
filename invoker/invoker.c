@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 		if (executable[0]=='#') {
 			ret = chdir(menuDirectory);
 			if (ret!=-1) {
-				ret = execlp(fileToBeExecutedWithFullPath,"invoker",NULL);
+				ret = execlp("opkrun","invoker",fileToBeExecutedWithFullPath,NULL);
 			}
 		} else {
 			ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);

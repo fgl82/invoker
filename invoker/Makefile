@@ -1,5 +1,5 @@
 # Software Name
-PROGRAM = invoker.elf
+PROGRAM = invoker.dge
 #PLATFORM = BITTBOY
 #PLATFORM = PC
 #PLATFORM = RS97
