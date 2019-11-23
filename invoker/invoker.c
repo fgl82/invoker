@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
 	int fd;
     struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
-    int columns = w.ws_col+30;
-    int rows = w.ws_row-4;
+//    int columns = w.ws_col+30;
+//    int rows = w.ws_row-4;
 	getcwd(menuDirectory, sizeof(menuDirectory));
 	ret = chdir(directory);
 	pid_t pid;
@@ -44,18 +44,34 @@ int main(int argc, char *argv[]) {
 		if (executable[0]=='#') {
 			ret = chdir(menuDirectory);
 			if (ret!=-1) {
-				ret = execlp("opkrun","invoker",fileToBeExecutedWithFullPath,NULL);
+				char *params[10];
+				if (strstr(fileToBeExecutedWithFullPath,";")!=NULL) {
+					params[0]="opkrun";
+					char *ptr = strtok(fileToBeExecutedWithFullPath, ";");
+					int i=1;
+					while(ptr != NULL) {
+						params[i]=malloc(strlen(ptr));
+						strcpy(params[i],ptr);
+						ptr = strtok(NULL, ";");
+						i++;
+					}
+					params[i]=NULL;
+					ret = execvp("opkrun",params);
+				} else {
+					ret = execlp("opkrun","invoker",fileToBeExecutedWithFullPath,NULL);
+				}
 			}
 		} else {
+			printf("opkrun %s %s\n",executable, fileToBeExecutedWithFullPath);
 			ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
 		}
 		close(fd);
 	} else {
-	    writeCenteredMessage("\033[1;31mW\033[01;33mA\033[1;32mI\033[1;36mT\n", rows, columns);
+//	    writeCenteredMessage("\033[1;31mW\033[01;33mA\033[1;32mI\033[1;36mT\n", rows, columns);
 		wait(0);
 	}
 	ret = chdir(menuDirectory);
-	writeCenteredMessage(" ", rows, columns);
+//	writeCenteredMessage(" ", rows, columns);
 	if  (ret!=-1) {
 		execlp("./simplemenu.dge","simplemenu.dge", states, activePage, returnTo, pictureMode, NULL);
 	} else {
