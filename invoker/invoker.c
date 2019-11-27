@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
 	char *executable=argv[2];
 	char *fileToBeExecutedWithFullPath=argv[3];
 	char *states=argv[4];
+	printf("states %s\n", states);
 	char *activePage=argv[5];
 	char *returnTo=argv[6];
 	char *pictureMode=argv[7];
@@ -84,13 +85,21 @@ int main(int argc, char *argv[]) {
 			//it's an emulator
 			if (strstr(executable,".opk")) {
 				//an opk emulator
-				ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
+				if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
+					ret=execlp("opkrun","invoker",executable,NULL);
+				} else {
+					ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
+				}
 			} else {
 				//it's an non-opk emulator
 				char localExec[100];
 				strcpy(localExec,"./");
 				strcat(localExec,executable);
-				ret=execlp(localExec,"invoker",fileToBeExecutedWithFullPath,NULL);
+				if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
+					ret=execlp(localExec,"invoker",NULL);
+				} else {
+					ret=execlp(localExec,"invoker",fileToBeExecutedWithFullPath,NULL);
+				}
 			}
 		}
 //		close(fd);
