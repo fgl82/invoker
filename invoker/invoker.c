@@ -26,7 +26,6 @@ int main(int argc, char *argv[]) {
 	char *executable=argv[2];
 	char *fileToBeExecutedWithFullPath=argv[3];
 	char *states=argv[4];
-	printf("states %s\n", states);
 	char *activePage=argv[5];
 	char *returnTo=argv[6];
 	char *pictureMode=argv[7];
@@ -63,6 +62,15 @@ int main(int argc, char *argv[]) {
 						i++;
 					}
 					params[i]=NULL;
+//					printf("WTF3 %s!\n", fileToBeExecutedWithFullPath);
+//					printf("WTF3 %s!\n", params[0]);
+//					printf("WTF3 %s!\n", params[1]);
+					if (strstr(params[2],"default.gcw0.desktop")!=NULL) {
+						params[2][strlen(params[2])-1]='\0';
+					}
+//					printf("WTF3 %s!\n", params[2]);
+//					printf("WTF3 %s!\n", params[3]);
+//					sleep(2);
 					ret = execvp("opkrun",params);
 				} else {
 //					printf("WTF3 %s!\n", fileToBeExecutedWithFullPath);
@@ -73,6 +81,7 @@ int main(int argc, char *argv[]) {
 //						sleep(2);
 						ret = execlp("opkrun","invoker",fileToBeExecutedWithFullPath,NULL);
 					} else {
+						//it's an executable
 						char* dirToSwitch = getFilePath(fileToBeExecutedWithFullPath);
 //						printf("%s\n",dirToSwitch);
 //						sleep(2);
@@ -108,7 +117,7 @@ int main(int argc, char *argv[]) {
 	}
 	ret = chdir(menuDirectory);
 	if  (ret!=-1) {
-		execlp("./simplemenu.dge","simplemenu.dge", states, activePage, returnTo, pictureMode, NULL);
+		execlp("./simplemenu","simplemenu", states, activePage, returnTo, pictureMode, NULL);
 	} else {
 		return (-1);
 	}

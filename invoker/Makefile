@@ -4,26 +4,29 @@ PROGRAM = invoker.dge
 #PLATFORM = PC
 #PLATFORM = RS97
 PLATFORM = RG-350
+#PLATFORM = NEW
 
 # Compiler
 
 ifeq ($(PLATFORM), BITTBOY)
-CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
+	CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
 else ifeq ($(PLATFORM), RS97)
-CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
+	CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
 else ifeq ($(PLATFORM), RG-350)
-CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
+	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
+else ifeq ($(PLATFORM), NEW)
+	CC = /opt/new-toolchain/usr/bin/mipsel-linux-gcc
 else
-CC = gcc
+	CC = gcc
 endif
 
 # You can use Ofast too but it can be more prone to bugs, careful.
 ifeq ($(PLATFORM), BITTBOY)
-CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
+	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
 else ifeq ($(PLATFORM), RG-350)
-CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
+	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
 else
-CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie
+	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie
 endif
 
 CFLAGS +=  -I.
