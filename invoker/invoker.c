@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 //					printf("WTF3 %s!\n", fileToBeExecutedWithFullPath);
 //					printf("WTF3 %s!\n", params[0]);
 //					printf("WTF3 %s!\n", params[1]);
-					if (strstr(params[2],"default.gcw0.desktop")!=NULL) {
+					if (strstr(params[2],"default.")!=NULL) {
 						params[2][strlen(params[2])-1]='\0';
 					}
 //					printf("WTF3 %s!\n", params[2]);
