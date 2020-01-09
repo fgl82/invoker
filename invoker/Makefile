@@ -1,10 +1,10 @@
 # Software Name
 PROGRAM = invoker.dge
-#PLATFORM = BITTBOY
+PLATFORM = BITTBOY
 #PLATFORM = PC
 #PLATFORM = RS97
 #PLATFORM = RG-350
-PLATFORM = NEW
+#PLATFORM = RG-300
 
 # Compiler
 
@@ -14,7 +14,7 @@ else ifeq ($(PLATFORM), RS97)
 	CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
 else ifeq ($(PLATFORM), RG-350)
 	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
-else ifeq ($(PLATFORM), NEW)
+else ifeq ($(PLATFORM), RG-300)
 	CC = /opt/new-toolchain/usr/bin/mipsel-linux-gcc
 else
 	CC = gcc
@@ -22,7 +22,7 @@ endif
 
 # You can use Ofast too but it can be more prone to bugs, careful.
 ifeq ($(PLATFORM), BITTBOY)
-	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
+	CFLAGS = -DTARGET_BITTBOY -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
 else ifeq ($(PLATFORM), RG-350)
 	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
 else

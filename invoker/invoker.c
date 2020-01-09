@@ -7,6 +7,17 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+void writeCenteredMessage(char *string, int rows, int cols) {
+	int vertl = rows/2;
+	int stringLength = strlen(string) / 2;
+	for (int x = 0; x <= rows; x++) {
+		printf("\n");
+		if (x == vertl) {
+			printf("\n%*s\n", cols / 2 + stringLength, string);
+		}
+	}
+}
+
 char *getFilePath(char *fileName) {
 	char *retstr;
 	char *lastslash;
@@ -30,17 +41,21 @@ int main(int argc, char *argv[]) {
 	char *returnTo=argv[6];
 	char *pictureMode=argv[7];
 	int ret=0;
-//	int fd;
+	int fd;
     struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
+    int columns = w.ws_col+30;
+    int rows = w.ws_row-4;    
 	getcwd(menuDirectory, sizeof(menuDirectory));
 	ret = chdir(directory);
 	pid_t pid;
 	pid = fork();
 	if (pid == 0 ) {
-//		fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
-//		dup2(fd, 1);
-//		dup2(fd, 2);
+		#ifdef TARGET_BITTBOY
+		fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);
+		dup2(fd, 1);
+		dup2(fd, 2);
+		#endif
 		//it's a section meant for native apps
 		if (executable[0]=='#') {
 //			printf("WTF!\n");
@@ -93,7 +108,7 @@ int main(int argc, char *argv[]) {
 		} else {
 			//it's an emulator
 			if (strstr(executable,".opk")) {
-				//an opk emulator
+				//it's an opk emulator
 				if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
 					ret=execlp("opkrun","invoker",executable,NULL);
 				} else {
@@ -101,21 +116,54 @@ int main(int argc, char *argv[]) {
 				}
 			} else {
 				//it's an non-opk emulator
-				char localExec[100];
-				strcpy(localExec,"./");
-				strcat(localExec,executable);
-				if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
-					ret=execlp(localExec,"invoker",NULL);
+				if (strstr(executable," ")==NULL) {
+					char localExec[100];
+					strcpy(localExec,"./");
+					strcat(localExec,executable);
+					if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
+						ret=execlp(localExec,"invoker",NULL);
+					} else {
+						ret=execlp(localExec,"invoker",fileToBeExecutedWithFullPath,NULL);
+					}
 				} else {
-					ret=execlp(localExec,"invoker",fileToBeExecutedWithFullPath,NULL);
+					char localExec[100];
+					char *params[10];
+					char *ptr = strtok(executable, " ");
+					strcpy(localExec,"./");
+					strcat(localExec,ptr);
+					params[0]=localExec;
+					int i=1;
+					ptr = strtok(NULL, " ");
+					while(ptr != NULL) {
+						params[i]=malloc(strlen(ptr)+1);
+						strcpy(params[i],ptr);
+						ptr = strtok(NULL, " ");
+						i++;
+					}
+					params[i]=malloc(strlen(fileToBeExecutedWithFullPath)+1);
+					strcpy(params[i],fileToBeExecutedWithFullPath);
+					i++;
+					params[i]=NULL;
+//					printf("WTF3 %s!\n", params[2]);
+//					printf("WTF3 %s!\n", params[3]);
+//					sleep(2);
+					ret = execvp(localExec,params);
 				}
 			}
 		}
-//		close(fd);
+		#ifdef TARGET_BITTBOY
+		close(fd);
+		#endif
 	} else {
+		#ifdef TARGET_BITTBOY
+	    writeCenteredMessage("\033[1;31mW\033[01;33mA\033[1;32mI\033[1;36mT\n", rows, columns);
+		#endif
 		wait(0);
 	}
 	ret = chdir(menuDirectory);
+	#ifdef TARGET_BITTBOY
+	writeCenteredMessage(" ", rows, columns);
+	#endif
 	if  (ret!=-1) {
 		execlp("./simplemenu","simplemenu", states, activePage, returnTo, pictureMode, NULL);
 	} else {
