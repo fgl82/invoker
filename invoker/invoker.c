@@ -41,11 +41,13 @@ int main(int argc, char *argv[]) {
 	char *returnTo=argv[6];
 	char *pictureMode=argv[7];
 	int ret=0;
+	#ifdef TARGET_BITTBOY
 	int fd;
     struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
     int columns = w.ws_col+30;
-    int rows = w.ws_row-4;    
+    int rows = w.ws_row-4;
+	#endif
 	getcwd(menuDirectory, sizeof(menuDirectory));
 	ret = chdir(directory);
 	pid_t pid;
