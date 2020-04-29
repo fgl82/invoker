@@ -167,7 +167,11 @@ int main(int argc, char *argv[]) {
 	writeCenteredMessage(" ", rows, columns);
 	#endif
 	if  (ret!=-1) {
+		#ifndef TARGET_PC
 		execlp("./simplemenu","simplemenu", states, activePage, returnTo, pictureMode, NULL);
+		#else
+		execlp("./simplemenu-x86","simplemenu-x86", states, activePage, returnTo, pictureMode, NULL);
+		#endif
 	} else {
 		return (-1);
 	}

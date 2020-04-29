@@ -1,32 +1,37 @@
 # Software Name
 PROGRAM = invoker.dge
 #PLATFORM = BITTBOY
-#PLATFORM = PC
-#PLATFORM = RS97
-PLATFORM = RG-350
 #PLATFORM = RG-300
+#PLATFORM = RG-350
+#PLATFORM = NPG
+PLATFORM = PC
 
 # Compiler
 
 ifeq ($(PLATFORM), BITTBOY)
 	CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
-else ifeq ($(PLATFORM), RS97)
-	CC = /opt/rs97-toolchain/bin/mipsel-linux-gcc
-else ifeq ($(PLATFORM), RG-350)
-	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
 else ifeq ($(PLATFORM), RG-300)
 	CC = /opt/new-toolchain/usr/bin/mipsel-linux-gcc
+else ifeq ($(PLATFORM), RG-350)
+	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
+else ifeq ($(PLATFORM), RG-NPG)
+	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc	
 else
+	PROGRAM = invoker-x86.dge
 	CC = gcc
 endif
 
 # You can use Ofast too but it can be more prone to bugs, careful.
 ifeq ($(PLATFORM), BITTBOY)
 	CFLAGS = -DTARGET_BITTBOY -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
+else ifeq ($(PLATFORM), RG-300)
+	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie	
 else ifeq ($(PLATFORM), RG-350)
 	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
+else ifeq ($(PLATFORM), NPG)
+	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
 else
-	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie
+	CFLAGS = -DTARGET_PC -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie	
 endif
 
 CFLAGS +=  -I.
