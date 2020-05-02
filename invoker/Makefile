@@ -14,7 +14,7 @@ else ifeq ($(PLATFORM), RG-300)
 	CC = /opt/new-toolchain/usr/bin/mipsel-linux-gcc
 else ifeq ($(PLATFORM), RG-350)
 	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
-else ifeq ($(PLATFORM), RG-NPG)
+else ifeq ($(PLATFORM), NPG)
 	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc	
 else
 	PROGRAM = invoker-x86.dge
