@@ -32,6 +32,9 @@ char *getFilePath(char *fileName) {
 }
 
 int main(int argc, char *argv[]) {
+	if (argc == 0) {
+		printf("Oops!\n");
+	}
 	char menuDirectory[100] = "";
 	char *directory=argv[1];
 	char *executable=argv[2];
@@ -60,12 +63,8 @@ int main(int argc, char *argv[]) {
 		#endif
 		//it's a section meant for native apps
 		if (executable[0]=='#') {
-//			printf("WTF!\n");
-//			sleep(1);
 			ret = chdir(menuDirectory);
 			if (ret!=-1) {
-//				printf("WTF2!\n");
-//				sleep(1);
 				//Native opk with a desktop file as parameter
 				char *params[10];
 				if (strstr(fileToBeExecutedWithFullPath,"|")!=NULL) {
@@ -79,29 +78,16 @@ int main(int argc, char *argv[]) {
 						i++;
 					}
 					params[i]=NULL;
-//					printf("WTF3 %s!\n", fileToBeExecutedWithFullPath);
-//					printf("WTF3 %s!\n", params[0]);
-//					printf("WTF3 %s!\n", params[1]);
 					if (strstr(params[2],"default.")!=NULL) {
 						params[2][strlen(params[2])-1]='\0';
 					}
-//					printf("WTF3 %s!\n", params[2]);
-//					printf("WTF3 %s!\n", params[3]);
-//					sleep(2);
 					ret = execvp("opkrun",params);
 				} else {
-//					printf("WTF3 %s!\n", fileToBeExecutedWithFullPath);
-//					sleep(1);
 					if(strstr(fileToBeExecutedWithFullPath,".opk")) {
-						//it's an opk with just a default desktop file
-//						printf("SIMPLE OPK! %s\n",fileToBeExecutedWithFullPath);
-//						sleep(2);
 						ret = execlp("opkrun","invoker",fileToBeExecutedWithFullPath,NULL);
 					} else {
 						//it's an executable
 						char* dirToSwitch = getFilePath(fileToBeExecutedWithFullPath);
-//						printf("%s\n",dirToSwitch);
-//						sleep(2);
 						chdir(dirToSwitch);
 						ret = execlp(fileToBeExecutedWithFullPath,"invoker",NULL);
 					}
@@ -114,7 +100,11 @@ int main(int argc, char *argv[]) {
 				if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
 					ret=execlp("opkrun","invoker",executable,NULL);
 				} else {
+					#ifdef TARGET_RG300
+					ret=execlp("opkrun","invoker","-m","default.retrofw.desktop",executable,fileToBeExecutedWithFullPath,NULL);
+					#else
 					ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
+					#endif
 				}
 			} else {
 				//it's an non-opk emulator
@@ -146,9 +136,6 @@ int main(int argc, char *argv[]) {
 					strcpy(params[i],fileToBeExecutedWithFullPath);
 					i++;
 					params[i]=NULL;
-//					printf("WTF3 %s!\n", params[2]);
-//					printf("WTF3 %s!\n", params[3]);
-//					sleep(2);
 					ret = execvp(localExec,params);
 				}
 			}
@@ -168,9 +155,9 @@ int main(int argc, char *argv[]) {
 	#endif
 	if  (ret!=-1) {
 		#ifndef TARGET_PC
-		execlp("./simplemenu","simplemenu", states, activePage, returnTo, pictureMode, NULL);
+		execlp("./simplemenu","simplemenu", "0", states, activePage, returnTo, pictureMode, NULL);
 		#else
-		execlp("./simplemenu-x86","simplemenu-x86", states, activePage, returnTo, pictureMode, NULL);
+		execlp("./simplemenu-x86","simplemenu-x86", "0", states, activePage, returnTo, pictureMode, NULL);
 		#endif
 	} else {
 		return (-1);

@@ -25,7 +25,7 @@ endif
 ifeq ($(PLATFORM), BITTBOY)
 	CFLAGS = -DTARGET_BITTBOY -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
 else ifeq ($(PLATFORM), RG-300)
-	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie	
+	CFLAGS = -DTARGET_RG300 -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie	
 else ifeq ($(PLATFORM), RG-350)
 	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
 else ifeq ($(PLATFORM), NPG)
@@ -51,12 +51,14 @@ SFILES =
 OFILES = $(SFILES:.S=.o) $(CFILES:.c=.o)
 
 $(PROGRAM):	$(OFILES)
-			$(CC) $(CFLAGS) $(OFILES) -o $@ $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(OFILES) -o $@ $(LDFLAGS)
+	@echo "Linking complete!"
 
 all: $(PROGRAM)
 
 %.o: %.c
-	 $(CC) $(CFLAGS) -c $< -o $@
+	 @$(CC) $(CFLAGS) -c $< -o $@
+	 @echo "Compiled "$<" successfully!"
 
 clean:
-	 -rm -f $(OFILES) $(MAPFILE) $(PROGRAM)
+	 @-rm -f $(OFILES) $(MAPFILE) $(PROGRAM)
