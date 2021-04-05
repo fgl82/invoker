@@ -1,19 +1,21 @@
 # Software Name
 PROGRAM = invoker.dge
 #PLATFORM = BITTBOY
-#PLATFORM = RG-300
-#PLATFORM = RG-350
+PLATFORM = RFW
+#PLATFORM = OD
 #PLATFORM = NPG
-PLATFORM = PC
+#PLATFORM = PC
 
 # Compiler
 
 ifeq ($(PLATFORM), BITTBOY)
 	CC = /opt/bittboy-toolchain/bin/arm-buildroot-linux-musleabi-gcc
-else ifeq ($(PLATFORM), RG-300)
-	CC = /opt/new-toolchain/usr/bin/mipsel-linux-gcc
-else ifeq ($(PLATFORM), RG-350)
+else ifeq ($(PLATFORM), RFW)
+	CC = /opt/rg300-toolchain/usr/bin/mipsel-linux-gcc
+else ifeq ($(PLATFORM), OD)
 	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
+else ifeq ($(PLATFORM), OD-BETA)
+	CC = /home/bittboy/Downloads/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc	
 else ifeq ($(PLATFORM), NPG)
 	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc	
 else
@@ -24,10 +26,12 @@ endif
 # You can use Ofast too but it can be more prone to bugs, careful.
 ifeq ($(PLATFORM), BITTBOY)
 	CFLAGS = -DTARGET_BITTBOY -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie -static
-else ifeq ($(PLATFORM), RG-300)
-	CFLAGS = -DTARGET_RG300 -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie	
-else ifeq ($(PLATFORM), RG-350)
+else ifeq ($(PLATFORM), RFW)
+	CFLAGS = -DTARGET_RFW -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -no-pie
+else ifeq ($(PLATFORM), OD)
 	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
+else ifeq ($(PLATFORM), OD-BETA)
+	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99	
 else ifeq ($(PLATFORM), NPG)
 	CFLAGS = -O2 -fdata-sections -ffunction-sections -fno-PIC -flto -Wall -Wextra -std=gnu99
 else

@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 				if (strcmp(fileToBeExecutedWithFullPath,"*")==0) {
 					ret=execlp("opkrun","invoker",executable,NULL);
 				} else {
-					#ifdef TARGET_RG300
+					#ifdef TARGET_RFW
 					ret=execlp("opkrun","invoker","-m","default.retrofw.desktop",executable,fileToBeExecutedWithFullPath,NULL);
 					#else
 					ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
