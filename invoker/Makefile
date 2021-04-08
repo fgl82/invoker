@@ -1,10 +1,10 @@
 # Software Name
 PROGRAM = invoker.dge
 #PLATFORM = BITTBOY
-PLATFORM = RFW
+#PLATFORM = RFW
 #PLATFORM = OD
 #PLATFORM = NPG
-#PLATFORM = PC
+PLATFORM = PC
 
 # Compiler
 
