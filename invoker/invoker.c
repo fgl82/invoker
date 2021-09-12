@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
 			ret = chdir(menuDirectory);
 			if (ret!=-1) {
 				//Native opk with a desktop file as parameter
-				char *params[10];
+				char *params[20];
 				if (strstr(fileToBeExecutedWithFullPath,"|")!=NULL) {
 					params[0]="opkrun";
 					char *ptr = strtok(fileToBeExecutedWithFullPath, "|");
@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
 #ifdef TARGET_RFW
 					ret=execlp("opkrun","invoker","-m","default.retrofw.desktop",executable,fileToBeExecutedWithFullPath,NULL);
 #else
-					ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
+					ret=execlp("opkrun","invoker","-m","default.gcw0.desktop",executable,fileToBeExecutedWithFullPath,NULL);
 #endif
 				}
 			} else {
