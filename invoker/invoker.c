@@ -154,8 +154,6 @@ int main(int argc, char *argv[]) {
 	char menuDirectory[100] = "";
 	char *directory=argv[1];
 	char *executable=argv[2];
-//	printf("%s\n", directory)
-//	printf("%s\n", executable);
 	char *fileToBeExecutedWithFullPath=argv[3];
 	int ret=0;
 #ifdef TARGET_BITTBOY
@@ -238,7 +236,7 @@ int main(int argc, char *argv[]) {
 #ifdef TARGET_RFW
 					ret=execlp("opkrun","invoker","-m","default.retrofw.desktop",executable,fileToBeExecutedWithFullPath,NULL);
 #else
-					ret=execlp("opkrun","invoker","-m","default.gcw0.desktop",executable,fileToBeExecutedWithFullPath,NULL);
+					ret=execlp("opkrun","invoker",executable,fileToBeExecutedWithFullPath,NULL);
 #endif
 				}
 			} else {
