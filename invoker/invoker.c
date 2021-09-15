@@ -178,8 +178,11 @@ int main(int argc, char *argv[]) {
 			ret = chdir(menuDirectory);
 			if (ret!=-1) {
 				//Native opk with a desktop file as parameter
+				printf("path1\n");
 				char *params[20];
+				printf("%s\n", fileToBeExecutedWithFullPath);
 				if (strstr(fileToBeExecutedWithFullPath,"|")!=NULL) {
+					printf("path1.1\n");
 					params[0]="opkrun";
 					char *ptr = strtok(fileToBeExecutedWithFullPath, "|");
 					int i=1;
@@ -187,14 +190,21 @@ int main(int argc, char *argv[]) {
 						params[i]=malloc(strlen(ptr));
 						strcpy(params[i],ptr);
 						ptr = strtok(NULL, "|");
+						printf("%s\n", params[i]);
 						i++;
 					}
 					params[i]=NULL;
 					if (strstr(params[2],"default.")!=NULL) {
+#ifdef TARGET_RFW
+						params[2][strlen(params[2])]='\0';
+#else
 						params[2][strlen(params[2])-1]='\0';
+#endif
 					}
+					printf("%s\n", params[2]);
 					ret = execvp("opkrun",params);
 				} else {
+					printf("path2\n");
 					if(strstr(fileToBeExecutedWithFullPath,".opk")) {
 						ret = execlp("opkrun","invoker",fileToBeExecutedWithFullPath,NULL);
 					} else {
