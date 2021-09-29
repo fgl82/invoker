@@ -31,14 +31,12 @@ char *getFilePath(char *fileName) {
 	return retstr;
 }
 
-void remove_quote(char* input){
-	//Implementing yourself to remove quotes so it would be completely like Linux shell
-}
 size_t cmd_param_split(char *buffer, char *argv[], size_t argv_max_size)
 {
 	char *p, *start_of_word;
 	int c;
-	enum states { DULL=0, IN_WORD, IN_STRING, QUOTE_DOUBLE} state = DULL;
+//	enum states { DULL=0, IN_WORD, IN_STRING, QUOTE_DOUBLE} state = DULL;
+	enum states { DULL=0, IN_WORD, IN_STRING} state = DULL;
 	size_t argc = 0;
 	int quote = 0;
 	for (p = buffer; argc < argv_max_size && *p != '\0'; p++) {
@@ -66,7 +64,7 @@ size_t cmd_param_split(char *buffer, char *argv[], size_t argv_max_size)
 				else
 					quote = 0;
 				strncpy(argv[argc],start_of_word, p - start_of_word);
-				remove_quote(argv[argc]);
+//				remove_quote(argv[argc]);
 				argc++;
 				state = DULL;
 			}
@@ -80,7 +78,7 @@ size_t cmd_param_split(char *buffer, char *argv[], size_t argv_max_size)
 
 			if (c==' ' && quote==0) {
 				strncpy(argv[argc],start_of_word, p - start_of_word);
-				remove_quote(argv[argc]);
+//				remove_quote(argv[argc]);
 				argc++;
 				state = DULL;
 			}
@@ -90,7 +88,7 @@ size_t cmd_param_split(char *buffer, char *argv[], size_t argv_max_size)
 
 	if (state != DULL && argc < argv_max_size){
 		strncpy(argv[argc],start_of_word, p - start_of_word);
-		remove_quote(argv[argc]);
+//		remove_quote(argv[argc]);
 		argc++;
 	}
 	return argc;
