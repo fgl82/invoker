@@ -19,7 +19,7 @@ else ifeq ($(PLATFORM), OD-BETA)
 else ifeq ($(PLATFORM), NPG)
 	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc	
 else
-	PROGRAM = invoker-x86.dge
+	PROGRAM = /home/bittboy/git/simplemenu/simplemenu/output/invoker.dge
 	CC = gcc
 endif
 
